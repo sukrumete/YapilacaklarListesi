@@ -7,28 +7,41 @@ C# ile yazılmış basit bir konsol yapılacaklar listesi (To-Do) uygulaması. C
 Program açılınca bir menü gösterir, kullanıcı numarayla seçim yapar:
 
 - **1 – Ekle:** Yeni bir görev yazılır ve listeye eklenir
-- **2 – Listele:** Eklenen görevler alt alta yazdırılır
-- **3 – Çıkış:** Program kapanır
+- **2 – Listele:** Görevler numaralı olarak alt alta yazdırılır (1-..., 2-...)
+- **3 – Sil:** Görevler numaralı gösterilir, kullanıcı silmek istediği görevin numarasını yazar
+- **4 – Çıkış:** Program kapanır
 - Her işlemden sonra menü tekrar gösterilir
-- Yanlış girişte program kapanmaz: Menüde olmayan bir sayı ya da harf yazılırsa "Geçersiz Seçim" der ve menüyü tekrar gösterir
+- Yanlış girişte program kapanmaz:
+  - Menüde olmayan bir sayı ya da harf yazılırsa "Geçersiz Seçim" der
+  - Silerken listede olmayan bir numara ya da harf yazılırsa "Geçersiz Numara" der
 
 ```
 Lütfen Seçeneklerden Birini Seçiniz
-1-) Ekle, 2-) Listele, 3-) Çıkış
-1
-Görevinizi Yazınız
-naber
+1-) Ekle, 2-) Listele, 3-) Sil, 4-) Çıkış
+3
+1-Naber
+2-Selam
+3-Merhaba
+Silmek istediğiniz görevin numarasını yazınız
+9
+Geçersiz Numara
 Lütfen Seçeneklerden Birini Seçiniz
-1-) Ekle, 2-) Listele, 3-) Çıkış
+1-) Ekle, 2-) Listele, 3-) Sil, 4-) Çıkış
+3
+1-Naber
+2-Selam
+3-Merhaba
+Silmek istediğiniz görevin numarasını yazınız
 2
-naber
+Görev Silindi
 Lütfen Seçeneklerden Birini Seçiniz
-1-) Ekle, 2-) Listele, 3-) Çıkış
-a
-Geçersiz Seçim
+1-) Ekle, 2-) Listele, 3-) Sil, 4-) Çıkış
+2
+1-Naber
+2-Merhaba
 ```
 
-(Örnek çıktı iki ayrı testimden birleştirildi; satırların hepsi gerçek test çıktısı.)
+(Gerçek test çıktılarım, iki ayrı denemeden birleştirildi; okunaklı olsun diye görev ekleme kısmı ve "a" denemesi çıkarıldı.)
 
 ## Kullanılanlar
 
@@ -61,12 +74,27 @@ Geçersiz Seçim
 - Yapay zekâ "case 3'teki `break` while'dan da çıkar mı?" diye sordu. Test ettim: 3'e basınca program kapanmadı, menü tekrar geldi. `break`'in sadece en yakın yapıdan (switch) çıktığını yapay zekâ açıkladı. `return` ile çözdüm, `return` fikri baştan benimdi
 - `default` ile geçersiz seçim mesajı ekledim, yapısı notlarımda vardı. İçini Visual Studio otomatik önerdi. "a" yazınca neden "Geçersiz Seçim" çıktığını anlamadım → yapay zekâ TryParse çeviremeyince `secim`'e 0 koyduğunu, case 0 olmadığı için `default`'a düştüğünü açıkladı
 - Ekleme, listeleme, çıkış, menüde olmayan sayı (5) ve harf (a) durumlarını ayrı ayrı test ettim
-- Bilinen sınırlamalar: Görevler program kapanınca siliniyor (dosyaya kaydetme V4'te). Liste boşken "Listele" seçilirse hiçbir şey yazmıyor. Görevler numarasız listeleniyor
+
+### Versiyon 2
+
+- Sil'in 3, Çıkış'ın 4 olmasına kendim karar verdim ve case numaralarını kendim güncelledim. Menü satırını güncellemeyi unuttum → yapay zekâ fark ettirdi (eksik virgülü de yapay zekâ ekledi). İlk denemede Sil kısmına `string gorev` (V1'deki ad çakışmasının aynısı), `gorevler.Delete(gorev)` ve yine "Tıklayınız" yazdım → yapay zekâ fark ettirdi, silme kısmını adım adım kurmak için önce sadece bir mesaj bıraktık. case 3'ün sonundaki `break`'i unuttum, ipucuyla ekledim
+- Numarayla silmek için kullanıcının önce numaraları görmesi gerektiğini yapay zekâ söyledi. Numara saymak için `++` kullanmayı, Sayı Tahmin'deki deneme sayacını hatırlatan ipucuyla buldum. `sira` adını yapay zekâ önerdi. `sira = 0` ve `sira++` satırlarını kendim yazdım (`int` ve `;` ipucuyla eklendi)
+- `sira` kutusunu önce `while`'ın dışında oluşturdum → yapay zekâ iki kere üst üste listeleyince numaraların 3, 4'ten devam edeceğini sordu. İlk başta sorunu anlamadım, yapay zekâ adım adım gösterdi. Kutuyu `while`'ın içine almayı kendim önerdim. Taşırken kopyaladım, üstteki eskisini silmeyi unuttum → yapay zekâ fark ettirdi
+- Numaralı yazdırmak için `$"..."` kullandım. İlk denemelerde süslü parantezlere `gorev` ve `gorevler` yazdım, sonra sırayı ters koydum (`naber-1`) → yapay zekâ `gorev`'in case 1'e ait olduğunu, `gorevler`'in bütün liste olduğunu açıkladı. `$"{sira}-{madde}"` satırını boşluk doldurma ile yazdım. Birkaç kez üst üste listeleyip numaraların hep 1'den başladığını test ettim
+- Sil kısmında listeyi göstermek için case 2'deki `foreach` bloğunu kopyalamayı yapay zekâ önerdi
+- Visual Studio'nun yapay zekâ tamamlaması silme kısmının tamamını (`RemoveAt`, `Count`, `numara - 1`, if / else) önerdi. Kabul etmedim, kodu adım adım kendim yazdım; ama yönü bu öneride önceden görmüş oldum
+- Kullanıcının yazdığı numarayı almak için menüdeki TryParse satırını örnek aldım. `numara` ve `numaraGecerli` adlarını yapay zekâ önerdi. İlk denemede `out sira` yazdım → yapay zekâ `sira`'nın liste sayacı olduğunu hatırlattı
+- Silme satırını yazarken önce `Delete`, sonra `Remove(secim)`, sonra `RemoveAt(secim)` yazdım → yapay zekâ `Remove`'un yazısıyla, `RemoveAt`'ın sıra numarasıyla sildiğini ve `secim`'de menü seçiminin (3) olduğunu açıkladı. Kodu Program.cs'ye yazmadan ilerlediğim için `numara` kutusunu unutmuştum; `gorevler.RemoveAt(numara);` satırının son halini yapay zekâ verdi
+- Test ederken program çöktü (ArgumentOutOfRangeException) → yapay zekâ listelerin 0'dan başladığını apartman (zemin kat) benzetmesiyle ve bir tabloyla açıkladı. Tabloya bakarak ekrandaki numara ile listedeki numara arasındaki farkın hep 1 olduğunu buldum. `-1 numara` yazdım, doğru yazılışı (`numara - 1`) yapay zekâ gösterdi
+- Yapay zekânın önerdiği testte 9 yazınca da program çöktü. Güvenli numaraların en az 1, en fazla görev sayısı olduğunu kendim söyledim. Görev sayısı değiştiği için sabit yazılamayacağını yapay zekâ söyledi, `Count`'u ipucuyla notlarımdan buldum (önce `?? ""` düşündüm). Notlarımdaki `list`'in benim listemin adı yerine geçtiğini öğrendim
+- Kontrol koşulunu yazarken TryParse satırlarını if'in içine koydum, `numaraGecerli` ile `numara`'yı karıştırdım, `1 <` ile 1'i dışarıda bıraktım ve if satırının sonuna `;` koydum → yapay zekâ her birini açıkladı (`;` olursa alttaki satırın her zaman çalışacağını da). Son halini (`numaraGecerli && numara >= 1 && numara <= gorevler.Count`) boşluk doldurma ile yazdım. `=<` diye bir işaret olmadığını öğrendim
+- Sonuç mesajlarını eklerken önce ayrı bir if yazdım → yapay zekâ mesajların var olan if'in ve onun `else`'inin içine gireceğini söyledi
+- 9, "a" ve geçerli numara ile test ettim. Bir görev silinince alttakilerin numarasının kaydığını gördüm (3-Merhaba → 2-Merhaba)
 
 ## Sonraki adımlar
 
 - [x] Menü, görev ekleme, listeleme ve çıkış
-- [ ] Numarasıyla görev silmek
+- [x] Numarasıyla görev silmek
 - [ ] "Tamamlandı" işaretlemek (Gorev sınıfı)
 - [ ] Görevleri dosyaya kaydetmek ve açılışta yüklemek
 - [ ] Görevi düzenlemek
