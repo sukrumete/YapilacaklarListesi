@@ -1,15 +1,12 @@
 ﻿List<string> gorevler = new List<string>();
 
-
-
-
 while (true)
 {
+    int sira = 0;
     Console.WriteLine("Lütfen Seçeneklerden Birini Seçiniz");
-    Console.WriteLine("1-) Ekle, 2-) Listele, 3-) Çıkış");
+    Console.WriteLine("1-) Ekle, 2-) Listele, 3-) Sil, 4-) Çıkış");
     int secim;
     bool gecerli = int.TryParse(Console.ReadLine(), out secim);
-
     switch (secim)
     {
         case 1:
@@ -20,10 +17,30 @@ while (true)
         case 2:
             foreach (string madde in gorevler)
             {
-                Console.WriteLine(madde);
+                sira++;
+                Console.WriteLine($"{sira}-{madde}");
             }
             break;
         case 3:
+            foreach (string madde in gorevler)
+            {
+                sira++;
+                Console.WriteLine($"{sira}-{madde}");
+            }
+            Console.WriteLine("Silmek istediğiniz görevin numarasını yazınız");
+            int numara;
+            bool numaraGecerli = int.TryParse(Console.ReadLine(), out numara);
+            if (numaraGecerli && numara >= 1 && numara <= gorevler.Count)
+            {
+                gorevler.RemoveAt(numara - 1);
+                Console.WriteLine("Görev Silindi");
+            }
+            else
+            {
+                Console.WriteLine("Geçersiz Numara");
+            }
+            break;
+        case 4:
             Console.WriteLine("Çıkış Yapılıyor");
             return;
         default:
@@ -31,5 +48,3 @@ while (true)
             break;
     }
 }
-
-//Yapilaacaklar Listesi Uygulaması
