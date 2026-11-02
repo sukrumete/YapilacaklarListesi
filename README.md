@@ -91,11 +91,25 @@ Lütfen Seçeneklerden Birini Seçiniz
 - Sonuç mesajlarını eklerken önce ayrı bir if yazdım → yapay zekâ mesajların var olan if'in ve onun `else`'inin içine gireceğini söyledi
 - 9, "a" ve geçerli numara ile test ettim. Bir görev silinince alttakilerin numarasının kaydığını gördüm (3-Merhaba → 2-Merhaba)
 
+### Versiyon 3
+- Önceki versiyonlarda görevleri List<string> ile tutuyorduk. Ancak artık bir görevin yalnızca başlığını değil, tamamlanma durumunu da saklamamız gerekiyordu. Bu nedenle Gorev adında bir sınıf oluşturarak görevleri nesneler üzerinden yönetmeye geçtik. Sınıf ve nesne yapısı üzerinde yapay zekâdan açıklama ve örnek desteği aldım.
+- Gorev sınıfında iki özellik bulunuyor: Baslik ve Tamamlandi. Baslik görev metnini, Tamamlandi ise görevin tamamlanıp tamamlanmadığını tutuyor. Böylece bir göreve ait birden fazla bilgiyi aynı nesne içinde saklamayı öğrendim.
+- Görev listesini List<string> yerine List<Gorev> olarak değiştirdik. Artık listede yalnızca metinler değil, Gorev nesneleri bulunuyor. Bu değişikliğin mantığını yapay zekânın verdiği açıklama ve örneklerle öğrendim.
+- Listeleme işlemini yeni sınıf yapısına uyarladık. foreach döngüsünde görev nesnelerini kullanmaya başladık. Görev başlığına Baslik özelliği üzerinden ulaşıyoruz.
+- Tamamlandı işaretleme işlemi için menüye yeni bir seçenek ekledim. Menü seçeneklerini ve switch içindeki case numaralarını güncelledim.
+- Kullanıcının girdiği görev numarasını almak için önceki versiyonda kullandığımız TryParse yapısından yararlandık. numara ve numaraGecerli değişkenlerini kullandık. Tamamlama işleminin giriş kontrolünde ise ayrı bir tamamlamaGecerli değişkeni kullandık.
+- numara değişkenini switch bloğunun dışında tanımladım. Çünkü hem silme hem de tamamlandı işaretleme işlemlerinde bu değişkene ihtiyacımız vardı. Böylece değişken kapsamı (scope) konusunu uygulama içinde tekrar kullandım.
+- Kullanıcının ekranda gördüğü görev numarası ile listenin indeksinin farklı olduğunu önceki projelerimden biliyordum. Bu nedenle doğru göreve ulaşmak için numara - 1 mantığını kullandım. Kullanıcının girdiği 1 numaralı görev, listenin 0. indeksinde bulunuyor.
+- Görevi tamamlandı olarak işaretlemek için ilgili nesnenin Tamamlandi özelliğine true atadım. Kullandığım satır: gorevler[numara - 1].Tamamlandi = true; Bu satırla görev başlığını değiştirmeden yalnızca tamamlanma durumunu güncelleyebiliyoruz.
+- Tamamlanma durumunu kontrol ederken Tamamlandi == true şeklindeki açık karşılaştırmayı tercih ettim. Daha kısa yazım biçimlerine geçmek yerine şimdilik mantığını daha rahat takip edebildiğim şekilde devam etmek istedim.
+- Dört görev ekleyerek ikinci görevi tamamlandı olarak işaretledim ve listeyi tekrar görüntüleyerek sonucu kontrol ettim. Görev silme işlemini de ayrıca test ettim.
+- Bu versiyonda sınıf ve nesne yapısını, nesne listesini, özelliklere erişmeyi ve bir nesnenin özelliğini değiştirmeyi uygulamalı olarak pekiştirdim. Bazı bölümlerde yapay zekâdan açıklama ve örnek aldım; kodu yazıp test ederek öğrendiklerimi uyguladım.
+
 ## Sonraki adımlar
 
 - [x] Menü, görev ekleme, listeleme ve çıkış
 - [x] Numarasıyla görev silmek
-- [ ] "Tamamlandı" işaretlemek (Gorev sınıfı)
+- [x] "Tamamlandı" işaretlemek (Gorev sınıfı)
 - [ ] Görevleri dosyaya kaydetmek ve açılışta yüklemek
 - [ ] Görevi düzenlemek
 - [ ] Tarih eklemek (oluşturma tarihi, son tarih)
