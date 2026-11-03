@@ -60,7 +60,7 @@ while (true)
             }
             else
             {
-                Console.WriteLine("Geçersiz");
+                Console.WriteLine("Geçersiz Numara");
 
 
             }
