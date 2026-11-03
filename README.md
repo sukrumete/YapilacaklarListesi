@@ -7,7 +7,7 @@ C# ile yazılmış basit bir konsol yapılacaklar listesi (To-Do) uygulaması. C
 Program açılınca bir menü gösterir, kullanıcı numarayla seçim yapar:
 
 - **1 – Ekle:** Yeni bir görev yazılır ve listeye eklenir
-- **2 – Listele:** Görevler numaralı olarak alt alta yazdırılır (1-..., 2-...)
+- **2 – Listele:** Görevler numaralı olarak alt alta yazdırılır, yanlarında durumları görünür (1-... (Tamamlandı), 2-... (Tamamlanmadı))
 - **3 – Sil:** Görevler numaralı gösterilir, kullanıcı silmek istediği görevin numarasını yazar
 - **4 – Tamamlandı:** Kullanıcı, tamamladığı görevin numarasını girerek görevi tamamlandı olarak işaretler
 - **5 – Çıkış:** Program kapanır
@@ -53,7 +53,7 @@ Lütfen Seçeneklerden Birini Seçiniz
 
 ## Nasıl çalıştım?
 
-- Bu projeyi de yapay zekâ ile soru-cevap şeklinde ilerleyerek yapıyorum. Her adımda yapay zekâ bana sorular soruyor, ipuçları veriyor ve kavramları açıklıyor.
+- Bu projeyi de yapay zekâ ile soru-cevap şeklinde ilerleyerek yapıyorum. V3'ün büyük kısmında Claude, haftalık hakkım bitince ChatGPT kullandım. Her adımda yapay zekâ bana sorular soruyor, ipuçları veriyor ve kavramları açıklıyor.
 - Kod satırlarını kendim yazıyorum. Takıldığım yerde önce küçük ipucu, sonra boşluk doldurma şeklinde yardım istiyorum. Bazı yerlerde çözümü yapay zekâ gösterdi, bunları aşağıda açıkça yazdım.
 - Planı ve fikirleri birlikte oluşturduk. README metinlerini de yapay zekâ ile birlikte düzenledim.
 - Her değişiklikten sonra programı kendim test ettim.
@@ -96,18 +96,27 @@ Lütfen Seçeneklerden Birini Seçiniz
 
 ### Versiyon 3
 
-- Önceki versiyonlarda görevleri `List<string>` ile tutuyorduk. Ancak artık bir görevin yalnızca başlığını değil, tamamlanma durumunu da saklamamız gerekiyordu. Bu nedenle `Gorev` adında bir sınıf oluşturarak görevleri nesneler üzerinden yönetmeye geçtik. Sınıf ve nesne yapısı üzerinde yapay zekâdan açıklama ve örnek desteği aldım.
-- `Gorev` sınıfında iki özellik bulunuyor: `Baslik` ve `Tamamlandi`. `Baslik` görev metnini, `Tamamlandi` ise görevin tamamlanıp tamamlanmadığını tutuyor. Böylece bir göreve ait birden fazla bilgiyi aynı nesne içinde saklamayı öğrendim.
-- Görev listesini `List<string>` yerine `List<Gorev>` olarak değiştirdik. Artık listede yalnızca metinler değil, `Gorev` nesneleri bulunuyor. Bu değişikliğin mantığını yapay zekânın verdiği açıklama ve örneklerle öğrendim.
-- Listeleme işlemini yeni sınıf yapısına uyarladık. `foreach` döngüsünde görev nesnelerini kullanmaya başladık. Görev başlığına `Baslik` özelliği üzerinden ulaşıyoruz.
-- Tamamlandı işaretleme işlemi için menüye yeni bir seçenek ekledim. Menü seçeneklerini ve `switch` içindeki `case` numaralarını güncelledim.
-- Kullanıcının girdiği görev numarasını almak için önceki versiyonda kullandığımız `TryParse` yapısından yararlandık. `numara` ve `numaraGecerli` değişkenlerini kullandık. Tamamlama işleminin giriş kontrolünde ise ayrı bir `tamamlamaGecerli` değişkeni kullandık.
-- `numara` değişkenini `switch` bloğunun dışında tanımladım. Çünkü hem silme hem de tamamlandı işaretleme işlemlerinde bu değişkene ihtiyacımız vardı. Böylece değişken kapsamı (`scope`) konusunu uygulama içinde tekrar kullandım.
-- Kullanıcının ekranda gördüğü görev numarası ile listenin indeksinin farklı olduğunu önceki projelerimden biliyordum. Bu nedenle doğru göreve ulaşmak için `numara - 1` mantığını kullandım. Kullanıcının girdiği 1 numaralı görev, listenin 0. indeksinde bulunuyor.
-- Görevi tamamlandı olarak işaretlemek için ilgili nesnenin `Tamamlandi` özelliğine `true` atadım. Kullandığım satır: `gorevler[numara - 1].Tamamlandi = true;` Bu satırla görev başlığını değiştirmeden yalnızca tamamlanma durumunu güncelleyebiliyoruz.
-- Tamamlanma durumunu kontrol ederken `Tamamlandi == true` şeklindeki açık karşılaştırmayı tercih ettim. Daha kısa yazım biçimlerine geçmek yerine şimdilik mantığını daha rahat takip edebildiğim şekilde devam etmek istedim.
-- Dört görev ekleyerek ikinci görevi tamamlandı olarak işaretledim ve listeyi tekrar görüntüleyerek sonucu kontrol ettim. Görev silme işlemini de ayrıca test ettim.
-- Bu versiyonda sınıf ve nesne yapısını, nesne listesini, özelliklere erişmeyi ve bir nesnenin özelliğini değiştirmeyi uygulamalı olarak pekiştirdim. Bazı bölümlerde yapay zekâdan açıklama ve örnek aldım; kodu yazıp test ederek öğrendiklerimi uyguladım.
+Bu versiyonun başını Claude ile yaptım. Claude haftalık kullanım hakkım bittiği için devamını (menüye Tamamlandı eklemek, case 4 ve listede durumun görünmesi) ChatGPT ile yaptım. İkisi de hazır kod yerine soru ve ipucuyla ilerledi, ama bazı satırları ikisi de gösterdi. Aşağıda ayırdım.
+
+**Claude ile yaptığım kısım:**
+
+- Görevin yalnızca yazısını değil "bitti mi?" bilgisini de tutmam gerektiğini, bunun için görevi bir "kart" gibi düşünmemi Claude anlattı. `Tamamlandi` kutusunun `bool` olması gerektiğini kendim buldum
+- `class Gorev` sınıfını (`Baslik` ve `Tamamlandi`) Sayı Tahmin'deki `Oyuncu` sınıfına bakarak kendim yazdım. `Tamamlandı` diye Türkçe karakterle yazmıştım → Claude fark ettirdi
+- `List<string>`'i `List<Gorev>` yaptım. Değiştirince `Add` ve `foreach` satırlarında kırmızı çizgi çıktı; sebebini (liste artık yazı değil kart tutuyor) Claude açıkladı
+- case 1'de kalıptan yeni kart çıkarmak için Sayı Tahmin'deki `yeniKart` satırını Claude hatırlattı, boşluk doldurma ile `Gorev yeniGorev = new Gorev();` yazdım (ilk denemede `Oyuncu` yazmıştım). `yeniGorev.Baslik(gorev);` yazdım → Claude özelliğe parantezle değil `=` ile değer konduğunu açıkladı. `gorevler.Add(yeniGorev);` içindeki `yeniGorev`'i kendim buldum
+
+**ChatGPT ile yaptığım kısım:**
+
+- `foreach (string madde in gorevler)` satırının `foreach (Gorev madde in gorevler)` olması gerektiğini ChatGPT gösterdi. `madde.Baslik` kullanmayı da ChatGPT söyledi; "neden böyle yaptık" diye sorunca açıkladı, sonraki soruyu (`madde.Baslik`) doğru cevapladım
+- Menüye 4. seçeneği eklemeyi ChatGPT önerdi. Çıkış'ın `case 5` olması gerektiğini ChatGPT fark ettirdi, değişikliği ben yaptım
+- case 4'te önce görevleri listelemek için `foreach`'i case 3'ten kopyaladım. Araya `bool Tamamlandi; true` yazmıştım → ChatGPT düzeltti
+- Ekrandaki numaranın listede 1 eksik olduğunu (`numara - 1`) kendim hatırladım. "Kullanıcı 2 girerse hangi indeks?" sorusuna yanlış cevap verdim (3), ChatGPT düzeltti
+- `gorevler[numara - 1].Tamamlandi = true;` satırını ChatGPT gösterdi. Önce `gorevler.RemoveAt(...)` ve `gorevler.Tamamlandi = true;` yazdım. Listeden numarayla bir göreve `[ ]` ile ulaşmayı ilk kez gördüm, ChatGPT sıfırdan anlattı
+- `numara` kutusunu `case 3` ve `case 4`'te ayrı tanımlayınca iki hata aldım ("already defined" ve "unassigned"). ChatGPT sebebini (case'ler aynı kapsamı paylaşıyor) açıkladı ve `int numara;` satırını switch'in üstüne taşımamı söyledi. Taşıdım
+- case 4'ün başındaki iki satırı (soru mesajı ve `tamamlamaGecerli` adıyla TryParse) ChatGPT verdi. Önce sırasını karıştırdım, ChatGPT düzeltti. "Numaranın geçerli olup olmadığını kontrol etmemiz lazım" fikri benden geldi; `if` koşulunu case 3'ten uyarlayarak kendim yazdım (`tamamlamaGecerli` adını ChatGPT söyledi). `Count`'un ne olduğunu unutmuştum, ChatGPT hatırlattı
+- case 4'ün `if / else` bloğunu (başarı mesajı ve `Geçersiz Numara` mesajı) kendim yazdım
+- Listede tamamlanan görevi göstermek için `case 2`'de `if (madde.Tamamlandi == true)` kullanacağımı kendim buldum. İçindeki yazdırma satırlarında zorlandım (`$` işaretini yanlış yere koydum, `Başarısız` yazdım, `#` kullandım). ChatGPT bunları adım adım düzeltti ve `$"{madde.Baslik} (Tamamlandı)"` örneğini gösterdi. `else` kısmını bu örneğe bakarak yazdım. Numaralı son hali (`$"{sira}-{madde.Baslik} (Tamamlandı)"` ve `(Tamamlanmadı)`) ChatGPT yazdı. ChatGPT bir de `case 2`'nin başına `sira = 0;` eklemişti, kabul etmedim; `sira` zaten `while`'ın içinde olduğu için her turda sıfırlanıyor
+- Dört görev ekleyip ikincisini tamamlandı olarak işaretledim ve listeyi tekrar açarak durumun göründüğünü kontrol ettim. Silme işlemini de ayrıca test ettim
 
 ## Sonraki adımlar
 
