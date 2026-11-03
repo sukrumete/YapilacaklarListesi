@@ -1,5 +1,18 @@
 ﻿List<Gorev> gorevler = new List<Gorev>();
 
+if (File.Exists("gorevler.txt"))
+{
+    string[] satirlar = File.ReadAllLines("gorevler.txt");
+    foreach (string satir in satirlar)
+    {
+        string[] parcalar = satir.Split(';');
+        Gorev yeniGorev = new Gorev();
+        yeniGorev.Baslik = parcalar[0];
+        bool.TryParse(parcalar[1], out yeniGorev.Tamamlandi);
+        gorevler.Add(yeniGorev);
+    }
+}
+
 while (true)
 {
     int sira = 0;
@@ -16,6 +29,7 @@ while (true)
             Gorev yeniGorev = new Gorev();
             yeniGorev.Baslik = gorev;
             gorevler.Add(yeniGorev);
+            Kaydet();
             break;
         case 2:
             foreach (Gorev madde in gorevler)
@@ -49,6 +63,7 @@ while (true)
             {
                 Console.WriteLine("Geçersiz Numara");
             }
+            Kaydet();
             break;
         case 4:
             Console.WriteLine("Tamamlamak istediğiniz görevin numarasını yazınız");
@@ -64,6 +79,7 @@ while (true)
 
 
             }
+            Kaydet();
             break;
         case 5:
             Console.WriteLine("Çıkış Yapılıyor");
@@ -72,6 +88,16 @@ while (true)
             Console.WriteLine("Geçersiz Seçim");
             break;
     }
+}
+
+void Kaydet()
+{
+    List<string> satirlar = new List<string>();
+    foreach (Gorev madde in gorevler)
+    {
+        satirlar.Add($"{madde.Baslik};{madde.Tamamlandi}");
+    }
+    File.WriteAllLines("gorevler.txt", satirlar);
 }
 
 class Gorev
