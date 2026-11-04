@@ -9,6 +9,8 @@ if (File.Exists("gorevler.txt"))
         Gorev yeniGorev = new Gorev();
         yeniGorev.Baslik = parcalar[0];
         bool.TryParse(parcalar[1], out yeniGorev.Tamamlandi);
+        yeniGorev.OlusturmaTarihi = parcalar[2];
+        yeniGorev.SonTarih = parcalar[3];
         gorevler.Add(yeniGorev);
     }
 }
@@ -26,8 +28,12 @@ while (true)
         case 1:
             Console.WriteLine("Görevinizi Yazınız");
             string gorev = Console.ReadLine();
+            Console.WriteLine("Son Tarihinizi Yazınız");
+            string sontarih = Console.ReadLine();
             Gorev yeniGorev = new Gorev();
             yeniGorev.Baslik = gorev;
+            yeniGorev.OlusturmaTarihi = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
+            yeniGorev.SonTarih = sontarih;
             gorevler.Add(yeniGorev);
             Kaydet();
             break;
@@ -38,13 +44,14 @@ while (true)
 
                 if (madde.Tamamlandi == true)
                 {
-                    Console.WriteLine($"{sira}-{madde.Baslik} (Tamamlandı)");
+                    Console.WriteLine($"{sira}-{madde.Baslik} (Tamamlandı) - {madde.OlusturmaTarihi} - Son Tarih: {madde.SonTarih}");
                 }
                 else
                 {
-                    Console.WriteLine($"{sira}-{madde.Baslik} (Tamamlanmadı)");
+                    Console.WriteLine($"{sira}-{madde.Baslik} (Tamamlanmadı) - {madde.OlusturmaTarihi} - Son Tarih: {madde.SonTarih}");
                 }
             }
+
             break;
         case 3:
             foreach (Gorev madde in gorevler)
@@ -115,7 +122,7 @@ void Kaydet()
     List<string> satirlar = new List<string>();
     foreach (Gorev madde in gorevler)
     {
-        satirlar.Add($"{madde.Baslik};{madde.Tamamlandi}");
+        satirlar.Add($"{madde.Baslik};{madde.Tamamlandi};{madde.OlusturmaTarihi};{madde.SonTarih}");
     }
     File.WriteAllLines("gorevler.txt", satirlar);
 }
@@ -124,4 +131,8 @@ class Gorev
 {
     public string Baslik;
     public bool Tamamlandi;
+
+    public string OlusturmaTarihi;
+
+    public string SonTarih;
 }
