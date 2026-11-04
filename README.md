@@ -6,14 +6,14 @@ C# ile yazılmış basit bir konsol yapılacaklar listesi (To-Do) uygulaması. C
 
 Program açılınca bir menü gösterir, kullanıcı numarayla seçim yapar:
 
-- **1 – Ekle:** Yeni bir görev yazılır ve listeye eklenir
-- **2 – Listele:** Görevler numaralı olarak alt alta yazdırılır, yanlarında durumları görünür (1-... (Tamamlandı), 2-... (Tamamlanmadı))
+- **1 – Ekle:** Yeni bir görev ve son tarihi yazılır, listeye eklenir (oluşturma tarihi otomatik eklenir)
+- **2 – Listele:** Görevler numaralı olarak alt alta yazdırılır, yanlarında durumları, oluşturma tarihleri ve son tarihleri görünür
 - **3 – Sil:** Görevler numaralı gösterilir, kullanıcı silmek istediği görevin numarasını yazar
 - **4 – Tamamlandı:** Kullanıcı, tamamladığı görevin numarasını girerek görevi tamamlandı olarak işaretler
 - **5 – Düzenle:** Görevler numaralı gösterilir, kullanıcı düzenlemek istediği görevin numarasını ve yeni başlığı yazar
 - **6 – Çıkış:** Program kapanır
 - Her işlemden sonra menü tekrar gösterilir
-- Görevler `gorevler.txt` dosyasına kaydedilir ve program tekrar açılınca yüklenir (görev ekleyince, silince, tamamlandı işaretleyince ve düzenleyince dosya güncellenir)
+- Görevler `gorevler.txt` dosyasına kaydedilir ve program tekrar açılınca yüklenir (görev ekleyince, silince, tamamlandı işaretleyince ve düzenleyince dosya güncellenir). Dosyada her görev tek satırdır: `Başlık;Durum;Oluşturma tarihi;Son tarih`
 - Yanlış girişte program kapanmaz:
   - Menüde olmayan bir sayı ya da harf yazılırsa "Geçersiz Seçim" der
   - Silme, tamamlandı işaretleme veya düzenleme sırasında listede olmayan bir numara ya da harf yazılırsa "Geçersiz Numara" der
@@ -21,30 +21,25 @@ Program açılınca bir menü gösterir, kullanıcı numarayla seçim yapar:
 ```
 Lütfen Seçeneklerden Birini Seçiniz
 1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Çıkış
-5
-1-Çiçek Sulamak
-2-Matematik
-3-Yemek yemek
-4-Savaş
-5-Strateji
-6-Çiçekçi
-Düzenlemek istediğiniz görevin numarasını yazınız
-4
-Yeni başlığı yazınız
-Kale
-Görev düzenlendi
+1
+Görevinizi Yazınız
+Gezmek
+Son Tarihinizi Yazınız
+1.12.2040
+```
+
+```
 Lütfen Seçeneklerden Birini Seçiniz
 1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Çıkış
 2
-1-Çiçek Sulamak (Tamamlandı)
-2-Matematik (Tamamlanmadı)
-3-Yemek yemek (Tamamlandı)
-4-Kale (Tamamlanmadı)
-5-Strateji (Tamamlanmadı)
-6-Çiçekçi  (Tamamlanmadı)
+1-Yemek Yapmak (Tamamlanmadı) - 04.11.2026 21:32 - Son Tarih:
+2-Alışveriş Yapmak (Tamamlanmadı) - 04.11.2026 21:32 - Son Tarih:
+3-Ders Çalışmak (Tamamlandı) - 04.11.2026 21:32 - Son Tarih:
+4-Uyumak (Tamamlanmadı) - 04.11.2026 22:11 - Son Tarih:
+5-Gezmek (Tamamlanmadı) - 04.11.2026 22:18 - Son Tarih: 1.12.2040
 ```
 
-(Gerçek test çıktım; okunaklı olsun diye geçersiz numara denemesi çıkarıldı.)
+(Gerçek test çıktılarım: Gezmek görevini ekleme ve programı kapatıp tekrar açtıktan sonraki liste. Araları okunaklı olsun diye çıkarıldı. İlk dört görevin son tarihi boş, çünkü onlar son tarih özelliğinden önce eklenmişti.)
 
 ## Kullanılanlar
 
@@ -53,7 +48,7 @@ Lütfen Seçeneklerden Birini Seçiniz
 
 ## Nasıl çalıştım?
 
-- Bu projeyi de yapay zekâ ile soru-cevap şeklinde ilerleyerek yapıyorum. V1, V2, V4 ve V5'te Claude kullandım. V3'ün başını Claude ile yaptım, haftalık hakkım bitince devamını ChatGPT ile yaptım. Her adımda yapay zekâ bana sorular soruyor, ipuçları veriyor ve kavramları açıklıyor.
+- Bu projeyi de yapay zekâ ile soru-cevap şeklinde ilerleyerek yapıyorum. V1, V2, V4, V5 ve V6'da Claude kullandım. V3'ün başını Claude ile yaptım, haftalık hakkım bitince devamını ChatGPT ile yaptım. Her adımda yapay zekâ bana sorular soruyor, ipuçları veriyor ve kavramları açıklıyor.
 - Kod satırlarını kendim yazıyorum. Takıldığım yerde önce küçük ipucu, sonra boşluk doldurma şeklinde yardım istiyorum. Bazı yerlerde çözümü yapay zekâ gösterdi, bunları aşağıda açıkça yazdım.
 - Planı ve fikirleri birlikte oluşturduk. README metinlerini de yapay zekâ ile birlikte düzenledim.
 - Her değişiklikten sonra programı kendim test ettim.
@@ -143,6 +138,22 @@ Bu versiyonun başını Claude ile yaptım. Claude haftalık kullanım hakkım b
 - `Kaydet();` çağrısını `break;`'in üstüne kendim koydum
 - 7 gibi olmayan bir numarayı, 4. görevin başlığını değiştirmeyi ve listelemeyi test ettim. Programı kapatıp açınca yeni başlığın (Kale) dosyadan geldiğini gördüm
 
+### Versiyon 6
+
+- Planda tarih için "oluşturma tarihi, son tarih" yazıyordu. Önce oluşturma tarihini yaptım. Karta yeni bir kutu eklememiz gerektiğini düşünürken "sınıfın içine yeni bir metot mu koymalıyız?" diye sordum, `Baslik` ve `Tamamlandi`'nın ne olduğunu da unutmuştum → yapay zekâ bunların metot değil, kartın üstündeki kutular (özellik) olduğunu, metotların iş yaptığını, tarihin ise bir bilgi olduğu için özellik olacağını açıkladı
+- Kutunun türünü önce `int` yazdım → yapay zekâ tarihin tam sayı olmadığını, notlarımdaki `DateTime.Now.ToString(...)` satırındaki `DateTime`'a bakmamı söyledi. `ToString` sayıyı yazıya çeviriyordu diye `string` yazmayı kendim düşündüm. Yapay zekâ `string` ile `DateTime`'ın farkını anlattı (`string` kolay ama tarihleri hesaplayamaz, `DateTime` hesaplar ama dosyadan okurken çeviri ister). V8'de tarihe göre sıralama olmadığını söyleyince `string` ile devam etmeye karar verdim. `public string OlusturmaTarihi;` satırını kendim yazdım
+- case 1'de oluşturma tarihini koyan satırı ilk denemede `yeni.Gorev.OlusturulmaTarihi = gorev;` yazdım (kartın adı ters, kutu adı yanlış, sağ tarafa görev yazısı koymuştum) → yapay zekâ üçünü de düzeltti. Sonra `ToString("dd.MM.yyyy HH:mm")`'i başına bir şey koymadan yazdım → yapay zekâ `ToString`'in çevireceği bir şeye ihtiyacı olduğunu söyledi. `DateTime.Now`'ın "şu anı bulmak", `string`'in "kutunun türü" olduğunu ("duvar saatine bakıp kâğıda yazmak" benzetmesiyle) yapay zekâ açıkladı. Tamamlanmış satırı (`DateTime.Now.ToString("dd.MM.yyyy HH:mm")`) ben yazdım
+- Listede göstermek için `case 2`'de iki satırın sonuna `- {madde.OlusturmaTarihi}` eklemeyi yapay zekâ söyledi, satırı boşluk doldurma ile yazdım. `if` ve `else` için ayrı mı yapacağım diye sordum, ikisine de aynısının gireceğini yapay zekâ açıkladı. Yeni görevde tarihin göründüğünü, eski görevlerin sonunda boş kaldığını test ettim
+- Tarihi dosyaya yazmak için `Kaydet`'teki satırın sonuna bir `;` ve üçüncü kutuyu eklemeyi yapay zekâ söyledi. Ne yaptığını anlamamıştım, yapay zekâ "tarih şu an geçici hafızada, dosyaya yazılmıyor" diye açıkladı. Satırı (`;{madde.OlusturmaTarihi}`) yazdım, ve her parçanın ne işe yaradığını kendi cümlemle anlattım. Dosyada satırların `Başlık;Durum;Tarih` biçiminde yazıldığını kontrol ettim
+- Açılışta okuyan bloğa `yeniGorev.OlusturmaTarihi = parcalar[2];` satırını ekledim. Tabloya bakarak üçüncü parçanın numarasını (2) ve kutu adını kendim buldum. Programı kapatıp açınca tarihlerin geldiğini test ettim
+- Son tarihi eklemeyi önce yapay zekâ gereksiz bulmuştu (plan şişmesin diye). Bir kullanıcı gözüyle bakmasını isteyince, yapay zekâ bir yapılacaklar listesinde "bunu şu güne kadar bitirmem lazım" bilgisinin işe yaradığını söyledi; ayrıca son tarih planın ilk hâlinde de vardı. Eklemeye ben karar verdim (ilerlemem gerekiyordu). "Neden son tarih yazıyoruz?" diye sordum, yapay zekâ sebebini açıkladı
+- Sınıfa `public string SonTarih;` satırını ekledim. Case 1'de başlıktan sonra "Son Tarihinizi Yazınız" sorusunu ve `string sontarih = Console.ReadLine();` satırını yazdım. İlk denemede mesajı başlık sorusuyla aynı bırakmıştım → yapay zekâ ikinci soruyu ayırmamı söyledi. Kutuyu küçük harfle (`sontarih`) yazdım çünkü bana "metottan sonra küçük yazılır" diye öğretilmişti → yapay zekâ kuralın doğrusunun "yerel kutular küçük, sınıfın özellikleri ve metotlar büyük harfle başlar" olduğunu açıkladı
+- Kullanıcının yazdığı tarihi karta koymakta zorlandım. Önce `Gorev sontarih = new Gorev);`, `gorev.SonTarih = sontarih`, sonra `Gorev.SonTarih = sontarih;` yazdım → yapay zekâ `Gorev`'in kalıbın adı (kurabiye kalıbı), `yeniGorev`'in kalıptan çıkan kart olduğunu, değerin kalıba değil karta yazıldığını açıkladı. Doğru satırı (`yeniGorev.SonTarih = sontarih;`) önce yapay zekâ gösterdi, kalıbı sonra boşluk doldurmayla kendim yazdım. `yeniGorev`'i case 1'e yazmadığım için nerede oluşturduğumuzu sordum → yapay zekâ case 1'in son halini tek parça gösterdi, ben yerleştirdim
+- Listede son tarihi `... - {madde.OlusturmaTarihi} - Son Tarih: {madde.SonTarih}` biçiminde gösterdim (boşluğu yapay zekâ bıraktı, kutu adını ben yazdım, `if` ve `else`'in ikisine)
+- `Kaydet`'e dördüncü parçayı (`;{madde.SonTarih}`) ekledim, dosyada satırların `Başlık;Durum;Oluşturma tarihi;Son tarih` biçimine geçtiğini kontrol ettim. Açılışta okuyan bloğa `yeniGorev.SonTarih = parcalar[3];` satırını ekledim (parça numarasını tablodan buldum). Eski görevlerin satırları `;` ile bittiği için `parcalar[3]` çökmedi, bunu yapay zekâ açıkladı
+- Yeni görev eklemeyi (başlık ve son tarih), listelemeyi, programı kapatıp açıp son tarihin (1.12.2040) dosyadan geldiğini test ettim
+- Bilinen sınırlamalar: Son tarih sadece yazı olarak tutuluyor, program tarihin geçerli olup olmadığını kontrol etmiyor ve geçip geçmediğini hesaplamıyor. Düzenle (5) sadece başlığı değiştiriyor, son tarih sonradan değiştirilemiyor. Eski görevlerin son tarihi boş. Görev başlığında ya da son tarihte `;` olursa dosyada o satır yanlış bölünür
+
 ## Sonraki adımlar
 
 - [x] Menü, görev ekleme, listeleme ve çıkış
@@ -150,7 +161,7 @@ Bu versiyonun başını Claude ile yaptım. Claude haftalık kullanım hakkım b
 - [x] "Tamamlandı" işaretlemek (Gorev sınıfı)
 - [x] Görevleri dosyaya kaydetmek ve açılışta yüklemek
 - [x] Görevi düzenlemek
-- [ ] Tarih eklemek (oluşturma tarihi, son tarih)
+- [x] Tarih eklemek (oluşturma tarihi, son tarih)
 - [ ] Öncelik eklemek (Düşük, Orta, Yüksek)
 - [ ] Filtreleme ve sıralama
 - [ ] GorevYoneticisi sınıfı ve ayrı dosyalar
