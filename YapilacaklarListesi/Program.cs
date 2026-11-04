@@ -17,7 +17,7 @@ while (true)
 {
     int sira = 0;
     Console.WriteLine("Lütfen Seçeneklerden Birini Seçiniz");
-    Console.WriteLine("1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Çıkış ");
+    Console.WriteLine("1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Çıkış");
     int secim;
     int numara;
     bool gecerli = int.TryParse(Console.ReadLine(), out secim);
@@ -82,6 +82,26 @@ while (true)
             Kaydet();
             break;
         case 5:
+            foreach (Gorev madde in gorevler)
+            {
+                sira++;
+                Console.WriteLine($"{sira}-{madde.Baslik}");
+            }
+            Console.WriteLine("Düzenlemek istediğiniz görevin numarasını yazınız");
+            bool duzenlemeGecerli = int.TryParse(Console.ReadLine(), out numara);
+            if (duzenlemeGecerli && numara >= 1 && numara <= gorevler.Count)
+            {
+                Console.WriteLine("Yeni başlığı yazınız");
+                gorevler[numara - 1].Baslik = Console.ReadLine();
+                Console.WriteLine("Görev düzenlendi");
+            }
+            else
+            {
+                Console.WriteLine("Geçersiz Numara");
+            }
+            Kaydet();
+            break;
+        case 6:
             Console.WriteLine("Çıkış Yapılıyor");
             return;
         default:
