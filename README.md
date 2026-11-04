@@ -10,41 +10,41 @@ Program açılınca bir menü gösterir, kullanıcı numarayla seçim yapar:
 - **2 – Listele:** Görevler numaralı olarak alt alta yazdırılır, yanlarında durumları görünür (1-... (Tamamlandı), 2-... (Tamamlanmadı))
 - **3 – Sil:** Görevler numaralı gösterilir, kullanıcı silmek istediği görevin numarasını yazar
 - **4 – Tamamlandı:** Kullanıcı, tamamladığı görevin numarasını girerek görevi tamamlandı olarak işaretler
-- **5 – Çıkış:** Program kapanır
+- **5 – Düzenle:** Görevler numaralı gösterilir, kullanıcı düzenlemek istediği görevin numarasını ve yeni başlığı yazar
+- **6 – Çıkış:** Program kapanır
 - Her işlemden sonra menü tekrar gösterilir
+- Görevler `gorevler.txt` dosyasına kaydedilir ve program tekrar açılınca yüklenir (görev ekleyince, silince, tamamlandı işaretleyince ve düzenleyince dosya güncellenir)
 - Yanlış girişte program kapanmaz:
   - Menüde olmayan bir sayı ya da harf yazılırsa "Geçersiz Seçim" der
-  - Silme veya tamamlandı işaretleme sırasında listede olmayan bir numara ya da harf yazılırsa "Geçersiz Numara" der
-
-**Not:** Aşağıdaki örnek çıktı V2 sürümündeki testlerden alınmıştır. V3 sürümünde menüye "Tamamlandı" seçeneği eklenmiştir.
+  - Silme, tamamlandı işaretleme veya düzenleme sırasında listede olmayan bir numara ya da harf yazılırsa "Geçersiz Numara" der
 
 ```
 Lütfen Seçeneklerden Birini Seçiniz
-1-) Ekle, 2-) Listele, 3-) Sil, 4-) Çıkış
-3
-1-Naber
-2-Selam
-3-Merhaba
-Silmek istediğiniz görevin numarasını yazınız
-9
-Geçersiz Numara
+1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Çıkış
+5
+1-Çiçek Sulamak
+2-Matematik
+3-Yemek yemek
+4-Savaş
+5-Strateji
+6-Çiçekçi
+Düzenlemek istediğiniz görevin numarasını yazınız
+4
+Yeni başlığı yazınız
+Kale
+Görev düzenlendi
 Lütfen Seçeneklerden Birini Seçiniz
-1-) Ekle, 2-) Listele, 3-) Sil, 4-) Çıkış
-3
-1-Naber
-2-Selam
-3-Merhaba
-Silmek istediğiniz görevin numarasını yazınız
+1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Çıkış
 2
-Görev Silindi
-Lütfen Seçeneklerden Birini Seçiniz
-1-) Ekle, 2-) Listele, 3-) Sil, 4-) Çıkış
-2
-1-Naber
-2-Merhaba
+1-Çiçek Sulamak (Tamamlandı)
+2-Matematik (Tamamlanmadı)
+3-Yemek yemek (Tamamlandı)
+4-Kale (Tamamlanmadı)
+5-Strateji (Tamamlanmadı)
+6-Çiçekçi  (Tamamlanmadı)
 ```
 
-(Gerçek test çıktılarım, iki ayrı denemeden birleştirildi; okunaklı olsun diye görev ekleme kısmı ve "a" denemesi çıkarıldı.)
+(Gerçek test çıktım; okunaklı olsun diye geçersiz numara denemesi çıkarıldı.)
 
 ## Kullanılanlar
 
@@ -53,7 +53,7 @@ Lütfen Seçeneklerden Birini Seçiniz
 
 ## Nasıl çalıştım?
 
-- Bu projeyi de yapay zekâ ile soru-cevap şeklinde ilerleyerek yapıyorum. V3'ün büyük kısmında Claude, haftalık hakkım bitince ChatGPT kullandım. Her adımda yapay zekâ bana sorular soruyor, ipuçları veriyor ve kavramları açıklıyor.
+- Bu projeyi de yapay zekâ ile soru-cevap şeklinde ilerleyerek yapıyorum. V1, V2, V4 ve V5'te Claude kullandım. V3'ün başını Claude ile yaptım, haftalık hakkım bitince devamını ChatGPT ile yaptım. Her adımda yapay zekâ bana sorular soruyor, ipuçları veriyor ve kavramları açıklıyor.
 - Kod satırlarını kendim yazıyorum. Takıldığım yerde önce küçük ipucu, sonra boşluk doldurma şeklinde yardım istiyorum. Bazı yerlerde çözümü yapay zekâ gösterdi, bunları aşağıda açıkça yazdım.
 - Planı ve fikirleri birlikte oluşturduk. README metinlerini de yapay zekâ ile birlikte düzenledim.
 - Her değişiklikten sonra programı kendim test ettim.
@@ -131,13 +131,25 @@ Bu versiyonun başını Claude ile yaptım. Claude haftalık kullanım hakkım b
 - Görev ekleyince `gorevler.txt` dosyasında `Çiçek Sulamak;False` gibi satırları, tamamlandı işaretleyince `...;True` satırını, silince görevin dosyadan gittiğini kontrol ettim. Programı kapatıp açınca 6 görevin ve tamamlandı durumunun geri geldiğini test ettim
 - Bilinen sınırlamalar: Görev adında `;` olursa o satır yanlış bölünür. Dosya elle bozulursa (ör. satırda `;` yoksa) program açılırken çökebilir
 
+### Versiyon 5
+
+- Düzenlemek için kullanıcıdan önce bir numara isteyeceğimizi (silme ve tamamlandıdaki gibi) kendim söyledim. Ondan sonra ne istenmesi gerektiğini ilk denemelerde yanlış söyledim (`Tamamlandi`, sonra `new`) → yapay zekâ düzenlemenin görevin yazısını değiştirmek olduğunu hatırlattı, yazıyı tutan kutunun `Baslik` olduğunu `public string Baslik;` satırına bakarak buldum
+- Menüde Düzenle'yi 5, Çıkış'ı 6 yapmayı yapay zekânın ipucuyla (Çıkış bir kayacak) buldum. Menü satırını ve `case` numaralarını kendim güncelledim. `case 5`'i önce boş bıraktım, test edebilmek için içine bir mesaj yazmamı yapay zekâ söyledi
+- Kullanıcı hangi görevi düzenleyeceğini görsün diye `case 3`'teki `foreach` bloğunu `case 5`'e kopyalamayı yapay zekâ önerdi. Ne yaptığını anlamadım, `madde`, `sira++` ve `foreach`'in kaç tur döneceğini yapay zekâ adım adım açıkladı. `foreach`'in kaç tur döneceğini yanlış tahmin ettim: Listenin numaraları 0'dan başladığı için 3 kartta 4 tur döner sandım. Yapay zekâ `foreach`'in numaraya değil kartlara baktığını, 3 kart için 3 tur döndüğünü ve `sira`'nın 0'dan başlayıp her turda 1 artarak son turda 3 olduğunu tabloyla gösterdi
+- Numarayı almak için TryParse satırını boşluk doldurma ile yazdım. `duzenlemeGecerli` adını yapay zekâ verdi, `out numara`'yı kendim buldum. Soruyu ve TryParse satırını `foreach`'ten önce yazmıştım → yapay zekâ sırayı düzeltti (önce liste, sonra soru, sonra numara)
+- Numaranın geçerli olup olmadığını kontrol eden `if / else` bloğunu `case 4`'e bakarak yazdım. Yapay zekâ boşluklu bir iskelet verdi, boşlukları (`numara >= 1`, `numara <= gorevler.Count`) ben doldurdum
+- Yazarken Visual Studio'nun yapay zekâ tamamlaması düzenleme kısmının tamamını gri yazıyla önerdi. Kabul etmedim. `gorevler[numara - 1].Baslik = Console.ReadLine();` satırını `case 4`'e bakarak kendim yazdım, ama öneride yönünü önceden görmüştüm
+- Kullanıcıya ne yazacağını söyleyen bir soru eksikti, bunu yapay zekâ fark ettirdi. "Yeni başlığı yazınız" ve "Görev düzenlendi" mesajlarını yapay zekâ önerdi, ekledim
+- `Kaydet();` çağrısını `break;`'in üstüne kendim koydum
+- 7 gibi olmayan bir numarayı, 4. görevin başlığını değiştirmeyi ve listelemeyi test ettim. Programı kapatıp açınca yeni başlığın (Kale) dosyadan geldiğini gördüm
+
 ## Sonraki adımlar
 
 - [x] Menü, görev ekleme, listeleme ve çıkış
 - [x] Numarasıyla görev silmek
 - [x] "Tamamlandı" işaretlemek (Gorev sınıfı)
 - [x] Görevleri dosyaya kaydetmek ve açılışta yüklemek
-- [ ] Görevi düzenlemek
+- [x] Görevi düzenlemek
 - [ ] Tarih eklemek (oluşturma tarihi, son tarih)
 - [ ] Öncelik eklemek (Düşük, Orta, Yüksek)
 - [ ] Filtreleme ve sıralama
