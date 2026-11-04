@@ -11,6 +11,7 @@ if (File.Exists("gorevler.txt"))
         bool.TryParse(parcalar[1], out yeniGorev.Tamamlandi);
         yeniGorev.OlusturmaTarihi = parcalar[2];
         yeniGorev.SonTarih = parcalar[3];
+        Enum.TryParse(parcalar[4], out yeniGorev.Seviye);
         gorevler.Add(yeniGorev);
     }
 }
@@ -30,10 +31,27 @@ while (true)
             string gorev = Console.ReadLine();
             Console.WriteLine("Son Tarihinizi Yazınız");
             string sontarih = Console.ReadLine();
+            Console.WriteLine("Öncelik seçiniz (1-Düşük, 2-Orta, 3-Yüksek)");
+            int oncelikNumara;
+            bool oncelikGecerli = int.TryParse(Console.ReadLine(), out oncelikNumara);
+            Oncelik secilenOncelik = Oncelik.Orta;
+            switch (oncelikNumara)
+            {
+                case 1:
+                    secilenOncelik = Oncelik.Dusuk;
+                    break;
+                case 2:
+                    secilenOncelik = Oncelik.Orta;
+                    break;
+                case 3:
+                    secilenOncelik = Oncelik.Yuksek;
+                    break;
+            }
             Gorev yeniGorev = new Gorev();
             yeniGorev.Baslik = gorev;
             yeniGorev.OlusturmaTarihi = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
             yeniGorev.SonTarih = sontarih;
+            yeniGorev.Seviye = secilenOncelik;
             gorevler.Add(yeniGorev);
             Kaydet();
             break;
@@ -44,11 +62,11 @@ while (true)
 
                 if (madde.Tamamlandi == true)
                 {
-                    Console.WriteLine($"{sira}-{madde.Baslik} (Tamamlandı) - {madde.OlusturmaTarihi} - Son Tarih: {madde.SonTarih}");
+                    Console.WriteLine($"{sira}-{madde.Baslik} (Tamamlandı) - {madde.OlusturmaTarihi} - Son Tarih: {madde.SonTarih} - Öncelik: {madde.Seviye}");
                 }
                 else
                 {
-                    Console.WriteLine($"{sira}-{madde.Baslik} (Tamamlanmadı) - {madde.OlusturmaTarihi} - Son Tarih: {madde.SonTarih}");
+                    Console.WriteLine($"{sira}-{madde.Baslik} (Tamamlanmadı) - {madde.OlusturmaTarihi} - Son Tarih: {madde.SonTarih} - Öncelik: { madde.Seviye}");
                 }
             }
 
@@ -122,7 +140,7 @@ void Kaydet()
     List<string> satirlar = new List<string>();
     foreach (Gorev madde in gorevler)
     {
-        satirlar.Add($"{madde.Baslik};{madde.Tamamlandi};{madde.OlusturmaTarihi};{madde.SonTarih}");
+        satirlar.Add($"{madde.Baslik};{madde.Tamamlandi};{madde.OlusturmaTarihi};{madde.SonTarih};{madde.Seviye}");
     }
     File.WriteAllLines("gorevler.txt", satirlar);
 }
@@ -135,4 +153,11 @@ class Gorev
     public string OlusturmaTarihi;
 
     public string SonTarih;
+
+    public Oncelik Seviye;
+}
+
+enum Oncelik
+{
+    Dusuk, Orta, Yuksek
 }
