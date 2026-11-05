@@ -6,40 +6,41 @@ C# ile yazılmış basit bir konsol yapılacaklar listesi (To-Do) uygulaması. C
 
 Program açılınca bir menü gösterir, kullanıcı numarayla seçim yapar:
 
-- **1 – Ekle:** Yeni bir görev ve son tarihi yazılır, listeye eklenir (oluşturma tarihi otomatik eklenir)
-- **2 – Listele:** Görevler numaralı olarak alt alta yazdırılır, yanlarında durumları, oluşturma tarihleri ve son tarihleri görünür
+- **1 – Ekle:** Yeni bir görev, son tarih ve öncelik (1 Düşük, 2 Orta, 3 Yüksek) yazılır, listeye eklenir (oluşturma tarihi otomatik eklenir)
+- **2 – Listele:** Görevler numaralı olarak alt alta yazdırılır, yanlarında durumları, oluşturma tarihleri, son tarihleri ve öncelikleri görünür
 - **3 – Sil:** Görevler numaralı gösterilir, kullanıcı silmek istediği görevin numarasını yazar
 - **4 – Tamamlandı:** Kullanıcı, tamamladığı görevin numarasını girerek görevi tamamlandı olarak işaretler
 - **5 – Düzenle:** Görevler numaralı gösterilir, kullanıcı düzenlemek istediği görevin numarasını ve yeni başlığı yazar
 - **6 – Çıkış:** Program kapanır
 - Her işlemden sonra menü tekrar gösterilir
-- Görevler `gorevler.txt` dosyasına kaydedilir ve program tekrar açılınca yüklenir (görev ekleyince, silince, tamamlandı işaretleyince ve düzenleyince dosya güncellenir). Dosyada her görev tek satırdır: `Başlık;Durum;Oluşturma tarihi;Son tarih`
+- Görevler `gorevler.txt` dosyasına kaydedilir ve program tekrar açılınca yüklenir (görev ekleyince, silince, tamamlandı işaretleyince ve düzenleyince dosya güncellenir). Dosyada her görev tek satırdır: `Başlık;Durum;Oluşturma tarihi;Son tarih;Öncelik`
 - Yanlış girişte program kapanmaz:
   - Menüde olmayan bir sayı ya da harf yazılırsa "Geçersiz Seçim" der
   - Silme, tamamlandı işaretleme veya düzenleme sırasında listede olmayan bir numara ya da harf yazılırsa "Geçersiz Numara" der
+  - Öncelik için 1, 2 ya da 3 dışında bir şey yazılırsa görev "Orta" öncelikle kaydedilir
 
 ```
 Lütfen Seçeneklerden Birini Seçiniz
 1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Çıkış
 1
 Görevinizi Yazınız
-Gezmek
+Yemek Yemek
 Son Tarihinizi Yazınız
-1.12.2040
+7.12.2036
+Öncelik seçiniz (1-Düşük, 2-Orta, 3-Yüksek)
+3
 ```
 
 ```
 Lütfen Seçeneklerden Birini Seçiniz
 1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Çıkış
 2
-1-Yemek Yapmak (Tamamlanmadı) - 04.11.2026 21:32 - Son Tarih:
-2-Alışveriş Yapmak (Tamamlanmadı) - 04.11.2026 21:32 - Son Tarih:
-3-Ders Çalışmak (Tamamlandı) - 04.11.2026 21:32 - Son Tarih:
-4-Uyumak (Tamamlanmadı) - 04.11.2026 22:11 - Son Tarih:
-5-Gezmek (Tamamlanmadı) - 04.11.2026 22:18 - Son Tarih: 1.12.2040
+1-Uyumak (Tamamlanmadı) - 05.11.2026 02:13 - Son Tarih: 26.12.2030 - Öncelik: Orta
+2-Yemek Yemek (Tamamlanmadı) - 05.11.2026 02:13 - Son Tarih: 7.12.2036 - Öncelik: Yuksek
+3-Ders Çalışmak (Tamamlanmadı) - 05.11.2026 02:13 - Son Tarih: 6.12.2056 - Öncelik: Dusuk
 ```
 
-(Gerçek test çıktılarım: Gezmek görevini ekleme ve programı kapatıp tekrar açtıktan sonraki liste. Araları okunaklı olsun diye çıkarıldı. İlk dört görevin son tarihi boş, çünkü onlar son tarih özelliğinden önce eklenmişti.)
+(Gerçek test çıktılarım: Yemek Yemek görevini ekleme ve programı kapatıp tekrar açtıktan sonraki liste. Araları okunaklı olsun diye çıkarıldı.)
 
 ## Kullanılanlar
 
@@ -48,7 +49,7 @@ Lütfen Seçeneklerden Birini Seçiniz
 
 ## Nasıl çalıştım?
 
-- Bu projeyi de yapay zekâ ile soru-cevap şeklinde ilerleyerek yapıyorum. V1, V2, V4, V5 ve V6'da Claude kullandım. V3'ün başını Claude ile yaptım, haftalık hakkım bitince devamını ChatGPT ile yaptım. Her adımda yapay zekâ bana sorular soruyor, ipuçları veriyor ve kavramları açıklıyor.
+- Bu projeyi de yapay zekâ ile soru-cevap şeklinde ilerleyerek yapıyorum. V1, V2, V4, V5, V6 ve V7'de Claude kullandım. V3'ün başını Claude ile yaptım, haftalık hakkım bitince devamını ChatGPT ile yaptım. Her adımda yapay zekâ bana sorular soruyor, ipuçları veriyor ve kavramları açıklıyor.
 - Kod satırlarını kendim yazıyorum. Takıldığım yerde önce küçük ipucu, sonra boşluk doldurma şeklinde yardım istiyorum. Bazı yerlerde çözümü yapay zekâ gösterdi, bunları aşağıda açıkça yazdım.
 - Planı ve fikirleri birlikte oluşturduk. README metinlerini de yapay zekâ ile birlikte düzenledim.
 - Her değişiklikten sonra programı kendim test ettim.
@@ -154,6 +155,21 @@ Bu versiyonun başını Claude ile yaptım. Claude haftalık kullanım hakkım b
 - Yeni görev eklemeyi (başlık ve son tarih), listelemeyi, programı kapatıp açıp son tarihin (1.12.2040) dosyadan geldiğini test ettim
 - Bilinen sınırlamalar: Son tarih sadece yazı olarak tutuluyor, program tarihin geçerli olup olmadığını kontrol etmiyor ve geçip geçmediğini hesaplamıyor. Düzenle (5) sadece başlığı değiştiriyor, son tarih sonradan değiştirilemiyor. Eski görevlerin son tarihi boş. Görev başlığında ya da son tarihte `;` olursa dosyada o satır yanlış bölünür
 
+### Versiyon 7
+
+- Planda öncelik için `enum` yazıyordu, ne olduğunu bilmiyordum. `string` ile `enum` farkını yapay zekâ "restoranın sabit menü kartı" benzetmesiyle anlattı. `string`'in her şeyi kabul ettiğini, `enum`'un sadece verilen seçenekleri kabul ettiğini kendim söyledim
+- `enum Oncelik { Dusuk, Orta, Yuksek }` yazısının şeklini (`enum`, ad, süslü parantez, virgülle ayrılmış seçenekler), adını ve seçenekleri yapay zekâ söyledi, ben yazdım. İlk denemede süslü parantezleri unuttum → yapay zekâ hatırlattı
+- Karta öncelik kutusunu önce `public string Seviye;` yazdım → yapay zekâ `string`'in her şeyi kabul ettiğini, türün menü kartının adı (`Oncelik`) olması gerektiğini söyledi. Sonra `public enum Seviye` yazdım → `enum` kelimesinin sadece menü kartını yazarken kullanıldığını, kutuyu açarken tür adının (`Oncelik`) yazıldığını açıkladı. `public Oncelik Seviye;` bana önce "saçma" geldi, yapay zekâ `Gorev yeniGorev` ile aynı mantık olduğunu gösterdi. `Seviye` adını yapay zekâ önerdi
+- Kullanıcıya "1-Düşük, 2-Orta, 3-Yüksek" diye sorup sayıyı sonra seçeneğe çevirme planını yapay zekâ kurdu. Mesajı ve `int.TryParse` iskeletini yapay zekâ verdi (menüdeki `secim` satırının aynısı), boşlukları ben doldurdum. İlk denemede `bool true` ve `out numara` yazdım → yapay zekâ düzeltti. `oncelikNumara` ve `oncelikGecerli` adlarını yapay zekâ örnek verdi
+- Sayıyı seçeneğe çevirmek için `switch` kullanacağımı kendim söyledim (hepsi aynı kutuya bakıyor, değerler sabit). Switch'in sonucunu tutacak kutuyu switch'ten önce açmam ve ona başlangıç değeri vermem gerektiğini yapay zekâ söyledi. `Oncelik secilenOncelik = Oncelik.Orta;` satırını yapay zekâ gösterdi (`Oncelik.Orta` yazımını daha önce hiç görmemiştim), türü (`Oncelik`) ben yazdım, ne yaptığını `bool tekrar = true;` ile karşılaştırarak yapay zekâ açıkladı. Switch'in iskeletini yapay zekâ verdi, `case 1`'i istemişti, üç case'i de (`Dusuk`, `Orta`, `Yuksek`) kendim yazdım
+- Seçilen önceliği karta koymakta zorlandım: `yeniGorev.Oncelik = oncelikNumara;`, `yeniGorev.Oncelik = Seviye;`, `yeniGorev.Oncelik = Oncelik.Seviye` yazdım → yapay zekâ `Oncelik`'in tür, `Seviye`'nin kutunun adı olduğunu, sağ tarafa da sayı değil switch'in doldurduğu kutunun (`secilenOncelik`) gelmesi gerektiğini birkaç kez açıkladı. Doğru satırı (`yeniGorev.Seviye = secilenOncelik;`) sonunda kendim yazdım
+- Listede göstermek için `case 2`'de iki satırın sonuna `- Öncelik: {madde.Seviye}` eklemeyi yapay zekâ söyledi, kutu adını ben yazdım. Eski görevlerin `Dusuk` görünmesini yapay zekâ açıkladı: Hiçbir şey konmayan `enum` kutusuna menüdeki ilk seçenek girer
+- `Kaydet`'te satırın sonuna `;{madde.Seviye}` eklemeyi yapay zekâ söyledi, kutu adını ben yazdım. `;`'den önce yanlışlıkla bir boşluk bırakmıştım → yapay zekâ fark ettirdi (boşluk dosyaya yazılır ve her kayıtta büyürdü)
+- Açılışta okuma satırını eklemeden önce programı kapatıp açınca `Yuksek` yazdığım görev `Dusuk` oldu → yapay zekâ, dosyadan okunan kartın `Seviye` kutusunun doldurulmadığı için boş kaldığını ve `Kaydet`'in bunu dosyaya yazdığını açıkladı. `Enum.TryParse(parcalar[4], out yeniGorev.Seviye);` satırının kalıbını yapay zekâ gösterdi, parça numarasını (4) ve kutu adını ben yazdım. Satırın ne yaptığını önce "sayıyı metne çevirir" diye anlattım, yön tersti: Dosyadaki yazıyı (`Yuksek`) seçeneğe çevirir. Sayıyı yazıya `ToString`, yazıyı türe `TryParse` çevirir
+- Bu versiyon benim için en yeni konuydu. `enum`'u ve `Oncelik.Orta` gibi yazımı ilk kez gördüm, ilk başta hiçbir şey aklıma gelmedi, zorlandım
+- Eski görevleri Sil menüsüyle silip üç yeni görev ekledim (öncelik 2, 3 ve 1). Programı kapatıp açınca üçünün de önceliğinin (Orta, Yuksek, Dusuk) dosyadan geldiğini gördüm
+- Bilinen sınırlamalar: Öncelik sorusunda 1, 2, 3 dışında bir şey (ör. 7 ya da harf) yazılırsa program hata vermeden `Orta` seçer. `oncelikGecerli` kutusunu açtım ama hiçbir yerde kullanmadım. Düzenle (5) önceliği de son tarihi de değiştirmiyor
+
 ## Sonraki adımlar
 
 - [x] Menü, görev ekleme, listeleme ve çıkış
@@ -162,6 +178,6 @@ Bu versiyonun başını Claude ile yaptım. Claude haftalık kullanım hakkım b
 - [x] Görevleri dosyaya kaydetmek ve açılışta yüklemek
 - [x] Görevi düzenlemek
 - [x] Tarih eklemek (oluşturma tarihi, son tarih)
-- [ ] Öncelik eklemek (Düşük, Orta, Yüksek)
+- [x] Öncelik eklemek (Düşük, Orta, Yüksek)
 - [ ] Filtreleme ve sıralama
 - [ ] GorevYoneticisi sınıfı ve ayrı dosyalar
