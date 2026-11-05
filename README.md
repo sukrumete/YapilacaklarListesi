@@ -11,7 +11,8 @@ Program açılınca bir menü gösterir, kullanıcı numarayla seçim yapar:
 - **3 – Sil:** Görevler numaralı gösterilir, kullanıcı silmek istediği görevin numarasını yazar
 - **4 – Tamamlandı:** Kullanıcı, tamamladığı görevin numarasını girerek görevi tamamlandı olarak işaretler
 - **5 – Düzenle:** Görevler numaralı gösterilir, kullanıcı düzenlemek istediği görevin numarasını ve yeni başlığı yazar
-- **6 – Çıkış:** Program kapanır
+- **6 – Bitmeyenler:** Sadece tamamlanmamış görevler, önceliğe göre (Yüksek en üstte) numarasız gösterilir
+- **7 – Çıkış:** Program kapanır
 - Her işlemden sonra menü tekrar gösterilir
 - Görevler `gorevler.txt` dosyasına kaydedilir ve program tekrar açılınca yüklenir (görev ekleyince, silince, tamamlandı işaretleyince ve düzenleyince dosya güncellenir). Dosyada her görev tek satırdır: `Başlık;Durum;Oluşturma tarihi;Son tarih;Öncelik`
 - Yanlış girişte program kapanmaz:
@@ -21,26 +22,33 @@ Program açılınca bir menü gösterir, kullanıcı numarayla seçim yapar:
 
 ```
 Lütfen Seçeneklerden Birini Seçiniz
-1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Çıkış
+1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Bitmeyenler 7-) Çıkış
 1
 Görevinizi Yazınız
-Yemek Yemek
+Kitap Okumak
 Son Tarihinizi Yazınız
-7.12.2036
+1.12.2028
 Öncelik seçiniz (1-Düşük, 2-Orta, 3-Yüksek)
 3
 ```
 
 ```
 Lütfen Seçeneklerden Birini Seçiniz
-1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Çıkış
-2
-1-Uyumak (Tamamlanmadı) - 05.11.2026 02:13 - Son Tarih: 26.12.2030 - Öncelik: Orta
-2-Yemek Yemek (Tamamlanmadı) - 05.11.2026 02:13 - Son Tarih: 7.12.2036 - Öncelik: Yuksek
-3-Ders Çalışmak (Tamamlanmadı) - 05.11.2026 02:13 - Son Tarih: 6.12.2056 - Öncelik: Dusuk
+1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Bitmeyenler 7-) Çıkış
+4
+Tamamlamak istediğiniz görevin numarasını yazınız
+4
+Tamamlandı olarak işaretlendi
+Lütfen Seçeneklerden Birini Seçiniz
+1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Bitmeyenler 7-) Çıkış
+6
+Kitap Okumak (Tamamlanmadı) - 05.11.2026 23:58 - Son Tarih: 1.12.2028 - Öncelik: Yuksek
+Geziye Gitmek (Tamamlanmadı) - 05.11.2026 23:59 - Son Tarih: 1.12.2029 - Öncelik: Yuksek
+Resim Çizmek (Tamamlanmadı) - 05.11.2026 23:58 - Son Tarih: 1.12.2028 - Öncelik: Orta
+Müzeye Gitmek (Tamamlanmadı) - 05.11.2026 23:59 - Son Tarih: 1.12.2030 - Öncelik: Dusuk
 ```
 
-(Gerçek test çıktılarım: Yemek Yemek görevini ekleme ve programı kapatıp tekrar açtıktan sonraki liste. Araları okunaklı olsun diye çıkarıldı.)
+(Gerçek test çıktılarım: Kitap Okumak görevini ekleme ve "Okula gitmek" görevini tamamlayıp Bitmeyenler listesini açma. Araları okunaklı olsun diye çıkarıldı.)
 
 ## Kullanılanlar
 
@@ -49,7 +57,7 @@ Lütfen Seçeneklerden Birini Seçiniz
 
 ## Nasıl çalıştım?
 
-- Bu projeyi de yapay zekâ ile soru-cevap şeklinde ilerleyerek yapıyorum. V1, V2, V4, V5, V6 ve V7'de Claude kullandım. V3'ün başını Claude ile yaptım, haftalık hakkım bitince devamını ChatGPT ile yaptım. Her adımda yapay zekâ bana sorular soruyor, ipuçları veriyor ve kavramları açıklıyor.
+- Bu projeyi de yapay zekâ ile soru-cevap şeklinde ilerleyerek yapıyorum. V1, V2, V4, V5, V6, V7 ve V8'de Claude kullandım. V3'ün başını Claude ile yaptım, haftalık hakkım bitince devamını ChatGPT ile yaptım. Her adımda yapay zekâ bana sorular soruyor, ipuçları veriyor ve kavramları açıklıyor.
 - Kod satırlarını kendim yazıyorum. Takıldığım yerde önce küçük ipucu, sonra boşluk doldurma şeklinde yardım istiyorum. Bazı yerlerde çözümü yapay zekâ gösterdi, bunları aşağıda açıkça yazdım.
 - Planı ve fikirleri birlikte oluşturduk. README metinlerini de yapay zekâ ile birlikte düzenledim.
 - Her değişiklikten sonra programı kendim test ettim.
@@ -170,6 +178,18 @@ Bu versiyonun başını Claude ile yaptım. Claude haftalık kullanım hakkım b
 - Eski görevleri Sil menüsüyle silip üç yeni görev ekledim (öncelik 2, 3 ve 1). Programı kapatıp açınca üçünün de önceliğinin (Orta, Yuksek, Dusuk) dosyadan geldiğini gördüm
 - Bilinen sınırlamalar: Öncelik sorusunda 1, 2, 3 dışında bir şey (ör. 7 ya da harf) yazılırsa program hata vermeden `Orta` seçer. `oncelikGecerli` kutusunu açtım ama hiçbir yerde kullanmadım. Düzenle (5) önceliği de son tarihi de değiştirmiyor
 
+### Versiyon 8
+
+- Planda "filtreleme ve sıralama (sadece bitmeyenler, önceliğe göre)" yazıyordu. Bunun için menüye yeni bir seçenek ekleyeceğimizi yapay zekâ söyledi. Yeni seçeneğin adı ("Bitmeyenler") yapay zekâdan örnek olarak geldi. Numaraları (6 Bitmeyenler, 7 Çıkış), menü satırını ve `case` numaralarını kendim yazdım
+- Bitmeyenleri göstermek için `case 2`'deki `foreach` bloğunu kopyalamayı yapay zekâ önerdi. "Bitmeyenler foreach dışında kalmalı" gibi karışık bir cümle yazdım → yapay zekâ `foreach`'in aynı kalacağını, süzme işini `if`'in yapacağını açıkladı. Koşulun `false` aramak olduğunu kendim söyledim, `if (madde.Tamamlandi == false)` satırını `case 2`'deki `== true` kalıbına bakarak yazdım
+- `else` için ne yazacağımı bilemedim → yapay zekâ bu `case`'te bitenleri göstermediğimiz için `else`'in tamamen silinebileceğini açıkladı (notlarımda "else yazmak zorunlu değil" yazıyordu)
+- `sira++`'ın `if`'in dışında, `foreach`'in içinde kalacağını (bitenler de sayılsın diye) yapay zekâ anlattı. İlk önce "foreach dışında kalmayacak mı?" diye karıştırdım
+- Sıralama için `OrderBy` ve `OrderByDescending` farkını yapay zekâ anlattı. En acil görevi üstte görmek için `OrderByDescending`'i kendim seçtim. `enum` seçeneklerinin arka planda numaralandığını (`Dusuk` = 0, `Orta` = 1, `Yuksek` = 2) yapay zekâ açıkladı
+- `foreach (Gorev madde in gorevler.OrderByDescending(k => k.______))` kalıbını yapay zekâ gösterdi (Sayı Tahmin V9'daki `OrderBy(k => ...)` notum vardı, `=>` işaretini hâlâ tam anlamamıştım). Boşluğa `Seviye`'yi ben yazdım. "Neden `k.Seviye`?" diye sordum → yapay zekâ `k.Seviye`'nin sıralamanın hangi kutuya bakacağını gösterdiğini açıkladı. Alfabetik sıralamak isteseydim `k.Baslik` yazacağımı kendim söyledim
+- Sıralayınca `6` listesindeki numaralar `2` listesindekilerle uyuşmadı (Okula gitmek `6`'da `2`, `2`'de `4`). Yapay zekâ önce numaraların aynı kalacağını söylemişti, bu yanlıştı; testteki farkı görünce hatasını kabul etti ve sebebini açıkladı (`sira++` artık öncelik sırasına göre sayıyor). İki çözümden (`IndexOf` ile gerçek numarayı yazmak ya da numarayı kaldırmak) "numarayı listeden almayı bilmiyorum, kısa yoldan gideyim" diyerek ikincisini seçtim. `sira++` ve `{sira}-` kısmını sildim
+- Birkaç görevi tamamlandı yapıp `6` ile listeledim, biten görevlerin listeden çıktığını, kalanların `Yuksek`, `Orta`, `Dusuk` sırasıyla göründüğünü gördüm. `7` ile çıkışı da test ettim
+- Bilinen sınırlamalar: Bitmeyenler listesinde numara yok. Sil, Tamamlandı ya da Düzenle için numarayı Listele (2) ekranından almak gerekiyor. Sıralama sadece ekranda geçerli, defterdeki ve dosyadaki sıra değişmiyor. Sadece öncelik sıralaması var
+
 ## Sonraki adımlar
 
 - [x] Menü, görev ekleme, listeleme ve çıkış
@@ -179,5 +199,5 @@ Bu versiyonun başını Claude ile yaptım. Claude haftalık kullanım hakkım b
 - [x] Görevi düzenlemek
 - [x] Tarih eklemek (oluşturma tarihi, son tarih)
 - [x] Öncelik eklemek (Düşük, Orta, Yüksek)
-- [ ] Filtreleme ve sıralama
+- [x] Filtreleme ve sıralama
 - [ ] GorevYoneticisi sınıfı ve ayrı dosyalar
