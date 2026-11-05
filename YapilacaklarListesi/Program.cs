@@ -1,20 +1,6 @@
-﻿List<Gorev> gorevler = new List<Gorev>();
+﻿GorevYoneticisi yonetici = new GorevYoneticisi();
+yonetici.Yukle();
 
-if (File.Exists("gorevler.txt"))
-{
-    string[] satirlar = File.ReadAllLines("gorevler.txt");
-    foreach (string satir in satirlar)
-    {
-        string[] parcalar = satir.Split(';');
-        Gorev yeniGorev = new Gorev();
-        yeniGorev.Baslik = parcalar[0];
-        bool.TryParse(parcalar[1], out yeniGorev.Tamamlandi);
-        yeniGorev.OlusturmaTarihi = parcalar[2];
-        yeniGorev.SonTarih = parcalar[3];
-        Enum.TryParse(parcalar[4], out yeniGorev.Seviye);
-        gorevler.Add(yeniGorev);
-    }
-}
 
 while (true)
 {
@@ -52,11 +38,11 @@ while (true)
             yeniGorev.OlusturmaTarihi = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
             yeniGorev.SonTarih = sontarih;
             yeniGorev.Seviye = secilenOncelik;
-            gorevler.Add(yeniGorev);
-            Kaydet();
+            yonetici.Gorevler.Add(yeniGorev);
+            yonetici.Kaydet();
             break;
         case 2:
-            foreach (Gorev madde in gorevler)
+            foreach (Gorev madde in yonetici.Gorevler)
             {
                 sira++;
 
@@ -71,30 +57,30 @@ while (true)
             }
             break;
         case 3:
-            foreach (Gorev madde in gorevler)
+            foreach (Gorev madde in yonetici.Gorevler)
             {
                 sira++;
                 Console.WriteLine($"{sira}-{madde.Baslik}");
             }
             Console.WriteLine("Silmek istediğiniz görevin numarasını yazınız");
             bool numaraGecerli = int.TryParse(Console.ReadLine(), out numara);
-            if (numaraGecerli && numara >= 1 && numara <= gorevler.Count)
+            if (numaraGecerli && numara >= 1 && numara <= yonetici.Gorevler.Count)
             {
-                gorevler.RemoveAt(numara - 1);
+                yonetici.Gorevler.RemoveAt(numara - 1);
                 Console.WriteLine("Görev Silindi");
             }
             else
             {
                 Console.WriteLine("Geçersiz Numara");
             }
-            Kaydet();
+            yonetici.Kaydet();
             break;
         case 4:
             Console.WriteLine("Tamamlamak istediğiniz görevin numarasını yazınız");
             bool tamamlamaGecerli = int.TryParse(Console.ReadLine(), out numara);
-            if (tamamlamaGecerli && numara >= 1 && numara <= gorevler.Count)
+            if (tamamlamaGecerli && numara >= 1 && numara <= yonetici.Gorevler.Count)
             {
-                gorevler[numara - 1].Tamamlandi = true;
+                yonetici.Gorevler[numara - 1].Tamamlandi = true;
                 Console.WriteLine("Tamamlandı olarak işaretlendi");
             }
             else
@@ -103,30 +89,30 @@ while (true)
 
 
             }
-            Kaydet();
+            yonetici.Kaydet();
             break;
         case 5:
-            foreach (Gorev madde in gorevler)
+            foreach (Gorev madde in yonetici.Gorevler)
             {
                 sira++;
                 Console.WriteLine($"{sira}-{madde.Baslik}");
             }
             Console.WriteLine("Düzenlemek istediğiniz görevin numarasını yazınız");
             bool duzenlemeGecerli = int.TryParse(Console.ReadLine(), out numara);
-            if (duzenlemeGecerli && numara >= 1 && numara <= gorevler.Count)
+            if (duzenlemeGecerli && numara >= 1 && numara <= yonetici.Gorevler.Count)
             {
                 Console.WriteLine("Yeni başlığı yazınız");
-                gorevler[numara - 1].Baslik = Console.ReadLine();
+                yonetici.Gorevler[numara - 1].Baslik = Console.ReadLine();
                 Console.WriteLine("Görev düzenlendi");
             }
             else
             {
                 Console.WriteLine("Geçersiz Numara");
             }
-            Kaydet();
+            yonetici.Kaydet();
             break;
         case 6:
-            foreach (Gorev madde in gorevler.OrderByDescending(k => k.Seviye))
+            foreach (Gorev madde in yonetici.Gorevler.OrderByDescending(k => k.Seviye))
             {
 
                 if (madde.Tamamlandi == false)
@@ -142,31 +128,4 @@ while (true)
             Console.WriteLine("Geçersiz Seçim");
             break;
     }
-}
-
-void Kaydet()
-{
-    List<string> satirlar = new List<string>();
-    foreach (Gorev madde in gorevler)
-    {
-        satirlar.Add($"{madde.Baslik};{madde.Tamamlandi};{madde.OlusturmaTarihi};{madde.SonTarih};{madde.Seviye}");
-    }
-    File.WriteAllLines("gorevler.txt", satirlar);
-}
-
-class Gorev
-{
-    public string Baslik;
-    public bool Tamamlandi;
-
-    public string OlusturmaTarihi;
-
-    public string SonTarih;
-
-    public Oncelik Seviye;
-}
-
-enum Oncelik
-{
-    Dusuk, Orta, Yuksek
 }
