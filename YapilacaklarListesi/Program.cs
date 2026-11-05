@@ -20,7 +20,7 @@ while (true)
 {
     int sira = 0;
     Console.WriteLine("Lütfen Seçeneklerden Birini Seçiniz");
-    Console.WriteLine("1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Çıkış");
+    Console.WriteLine("1-) Ekle, 2-) Listele, 3-) Sil, 4-) Tamamlandı 5-) Düzenle 6-) Bitmeyenler 7-) Çıkış");
     int secim;
     int numara;
     bool gecerli = int.TryParse(Console.ReadLine(), out secim);
@@ -66,10 +66,9 @@ while (true)
                 }
                 else
                 {
-                    Console.WriteLine($"{sira}-{madde.Baslik} (Tamamlanmadı) - {madde.OlusturmaTarihi} - Son Tarih: {madde.SonTarih} - Öncelik: { madde.Seviye}");
+                    Console.WriteLine($"{sira}-{madde.Baslik} (Tamamlanmadı) - {madde.OlusturmaTarihi} - Son Tarih: {madde.SonTarih} - Öncelik: {madde.Seviye}");
                 }
             }
-
             break;
         case 3:
             foreach (Gorev madde in gorevler)
@@ -127,6 +126,16 @@ while (true)
             Kaydet();
             break;
         case 6:
+            foreach (Gorev madde in gorevler.OrderByDescending(k => k.Seviye))
+            {
+
+                if (madde.Tamamlandi == false)
+                {
+                    Console.WriteLine($"{madde.Baslik} (Tamamlanmadı) - {madde.OlusturmaTarihi} - Son Tarih: {madde.SonTarih} - Öncelik: {madde.Seviye}");
+                }
+            }
+            break;
+        case 7:
             Console.WriteLine("Çıkış Yapılıyor");
             return;
         default:
