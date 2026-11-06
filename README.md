@@ -55,9 +55,16 @@ Müzeye Gitmek (Tamamlanmadı) - 05.11.2026 23:59 - Son Tarih: 1.12.2030 - Önce
 - C#
 - .NET 10
 
+## Dosyalar
+
+- `Program.cs`: menü ve `switch` içindeki işlemler
+- `GorevYoneticisi.cs`: görev listesini (`Gorevler`) tutar, `Kaydet` ve `Yukle` metotları burada
+- `Gorev.cs`: bir görevin bilgileri (başlık, tamamlandı, oluşturma tarihi, son tarih, öncelik)
+- `Oncelik.cs`: öncelik seçenekleri (`Dusuk`, `Orta`, `Yuksek`)
+
 ## Nasıl çalıştım?
 
-- Bu projeyi de yapay zekâ ile soru-cevap şeklinde ilerleyerek yapıyorum. V1, V2, V4, V5, V6, V7 ve V8'de Claude kullandım. V3'ün başını Claude ile yaptım, haftalık hakkım bitince devamını ChatGPT ile yaptım. Her adımda yapay zekâ bana sorular soruyor, ipuçları veriyor ve kavramları açıklıyor.
+- Bu projeyi de yapay zekâ ile soru-cevap şeklinde ilerleyerek yapıyorum. V1, V2, V4, V5, V6, V7, V8 ve V9'da Claude kullandım. V3'ün başını Claude ile yaptım, haftalık hakkım bitince devamını ChatGPT ile yaptım. Her adımda yapay zekâ bana sorular soruyor, ipuçları veriyor ve kavramları açıklıyor.
 - Kod satırlarını kendim yazıyorum. Takıldığım yerde önce küçük ipucu, sonra boşluk doldurma şeklinde yardım istiyorum. Bazı yerlerde çözümü yapay zekâ gösterdi, bunları aşağıda açıkça yazdım.
 - Planı ve fikirleri birlikte oluşturduk. README metinlerini de yapay zekâ ile birlikte düzenledim.
 - Her değişiklikten sonra programı kendim test ettim.
@@ -190,6 +197,20 @@ Bu versiyonun başını Claude ile yaptım. Claude haftalık kullanım hakkım b
 - Birkaç görevi tamamlandı yapıp `6` ile listeledim, biten görevlerin listeden çıktığını, kalanların `Yuksek`, `Orta`, `Dusuk` sırasıyla göründüğünü gördüm. `7` ile çıkışı da test ettim
 - Bilinen sınırlamalar: Bitmeyenler listesinde numara yok. Sil, Tamamlandı ya da Düzenle için numarayı Listele (2) ekranından almak gerekiyor. Sıralama sadece ekranda geçerli, defterdeki ve dosyadaki sıra değişmiyor. Sadece öncelik sıralaması var
 
+### Versiyon 9
+
+- Planda "GorevYoneticisi sınıfı ve ayrı dosyalar (Hesap Makinesi V13 gibi)" yazıyordu. Fikri ("Program.cs garson, GorevYoneticisi mutfak": menüyü Program.cs gösterir, defterle ilgili işleri sınıf yapar) yapay zekâ anlattı. İşi üç adıma bölmeyi de yapay zekâ önerdi: önce `Gorev` ve `Oncelik`'i ayrı dosyaya taşımak, sonra `GorevYoneticisi`'ni yazmak, sonra `Program.cs`'yi ona bağlamak
+- `GorevYoneticisi.cs`'de önce sadece listeyi yazdım. `public List<Gorev> gorevler = new List<Gorev>();` satırını notlarımdaki `Gecmis` örneğine bakarak yazdım, `class` kelimesini unuttum, sonra ekledim. Sınıfın kutusunun büyük harfle (`Gorevler`) yazılması gerektiğini yapay zekâ söyledi
+- `Kaydet`'i `Program.cs`'den kopyaladım. Başına `public` yazmamı ve `foreach`'te `Gorevler` kullanmamı yapay zekâ söyledi (iskeleti o verdi), boşlukları ben doldurdum
+- Dosyadan okuma bloğunu da sınıfa taşımamı yapay zekâ önerdi ve adını `Yukle` koymamı söyledi (ben `public void Kaydet();` yazmıştım, sonuna `;` konmayacağını da yapay zekâ söyledi). "Neden `Yukle`'nin içine aldık?" diye sordum → yapay zekâ okuma bloğunu tek bir adla çağırılabilir yapmak için olduğunu, sınıfın içine serbest komut konamayacağını açıkladı. Bloğun içindeki `gorevler.Add(yeniGorev)` satırını `Gorevler.Add(yeniGorev)` yapmamı yapay zekâ söyledi, ben yaptım
+- `GorevYoneticisi yonetici = new GorevYoneticisi();` satırını Hesap Makinesi'ndeki `HesapMakinesi makine = new HesapMakinesi();` örneğine bakarak yazdım, `while`'ın dışına koydum. `yonetici` adını yapay zekâ önerdi
+- Programı adım adım bağlamak için yapay zekâ geçici bir yol önerdi: eski `gorevler` adını yeni deftere ikinci ad yapmak. `yonetici.Yukle();` satırını yapay zekâ gösterdi, "neden `Yukle()`'yi çağırdık?" diye sordum, açıkladı. `List<Gorev> gorevler = yonetici.Gorevler;` satırındaki boşluğu (`yonetici`) ben doldurdum. Eski 15 satırlık okuma bloğunu sildim
+- Eski `Kaydet` metodunu çağrıları değiştirmeden önce sildim, `Program.cs`'de kırmızı çizgiler çıktı → yapay zekâ sebebini açıkladı, dört `Kaydet();` çağrısını `yonetici.Kaydet();` yaptım
+- `Program.cs`'deki `gorevler` yazan yerleri `yonetici.Gorevler` yaptım. Yapay zekâ Bul ve Değiştir'i önerdi, ben elle yaptım ve önce yarım bıraktım (sadece `foreach`'leri değiştirmiştim) → yapay zekâ iki adın karışık kalmasının karışıklık yaratacağını söyledi, hepsini değiştirdim. En üstteki ikinci ad satırını (`List<Gorev> gorevler = yonetici.Gorevler;`) sildim
+- Tek başıma kuramazdım: sınıfın şeklini ve neyin nereye taşınacağını yapay zekâ gösterdi. Ben dosyaları taşıdım, boşlukları doldurdum, `Program.cs`'deki satırları değiştirdim
+- Ekleme, listeleme, tamamlandı işaretleme, düzenleme, silme ve bitmeyenler listesini yeni yapıyla test ettim, programı kapatıp açınca değişikliklerin yerinde olduğunu gördüm
+- Bilinen sınırlamalar: `GorevYoneticisi`'ne sadece liste, `Kaydet` ve `Yukle` taşındı. Ekleme, silme, tamamlandı işaretleme ve düzenleme işleri hâlâ `Program.cs`'de (`yonetici.Gorevler` üzerinde yapılıyor), yani bölme yarım. Önceki versiyonların sınırlamaları (öncelikte 1, 2, 3 dışı giriş, başlıkta `;`, Düzenle'nin sadece başlığı değiştirmesi) duruyor
+
 ## Sonraki adımlar
 
 - [x] Menü, görev ekleme, listeleme ve çıkış
@@ -200,4 +221,4 @@ Bu versiyonun başını Claude ile yaptım. Claude haftalık kullanım hakkım b
 - [x] Tarih eklemek (oluşturma tarihi, son tarih)
 - [x] Öncelik eklemek (Düşük, Orta, Yüksek)
 - [x] Filtreleme ve sıralama
-- [ ] GorevYoneticisi sınıfı ve ayrı dosyalar
+- [x] GorevYoneticisi sınıfı ve ayrı dosyalar
